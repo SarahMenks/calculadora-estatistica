@@ -1,4 +1,4 @@
-name: C++ CI
+name: C++ Multi-OS & Standard CI
 
 on:
   push:
@@ -8,11 +8,24 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        cpp_std: [17, 20]
 
     steps:
     - name: Baixar código do repositório
       uses: actions/checkout@v4
 
-    - name: Compilar e Executar Testes
-      run: make
+    - name: Compilar e Executar Testes (Ubuntu / macOS)
+      if: runner.os != 'Windows'
+      run: make CXXFLAGS="-std=c++${{ matrix.cpp_std }} -Wall -Wextra"
+
+    - name: Compilar e Executar Testes (Windows MSVC)
+      if: runner.os == 'Windows'
+      shell: cmd
+      run: |
+        cl /EHsc /std:c++${{ matrix.cpp_std }} estatistica.cpp testes.cpp /Fe:executavel_testes.exe
+        executavel_testes.exe
