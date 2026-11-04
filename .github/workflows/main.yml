@@ -23,6 +23,10 @@ jobs:
       if: runner.os != 'Windows'
       run: make CXXFLAGS="-std=c++${{ matrix.cpp_std }} -Wall -Wextra"
 
+    - name: Configurar ambiente do MSVC
+      if: runner.os == 'Windows'
+      uses: ilammy/msvc-dev-cmd@v1
+
     - name: Compilar e Executar Testes (Windows MSVC)
       if: runner.os == 'Windows'
       shell: cmd
