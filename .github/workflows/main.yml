@@ -25,6 +25,7 @@ jobs:
 
     - name: Compilar e Executar Testes (Windows MSVC)
       if: runner.os == 'Windows'
+      uses: ilammy/msvc-dev-cmd@v1
       shell: cmd
       run: |
         cl /EHsc /std:c++${{ matrix.cpp_std }} estatistica.cpp testes.cpp /Fe:executavel_testes.exe
