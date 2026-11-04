@@ -23,10 +23,12 @@ jobs:
       if: runner.os != 'Windows'
       run: make CXXFLAGS="-std=c++${{ matrix.cpp_std }} -Wall -Wextra"
 
-    - name: Compilar e Executar Testes (Windows MSVC)
+    - name: Configurar ambiente MSVC
       if: runner.os == 'Windows'
       uses: ilammy/msvc-dev-cmd@v1
-      shell: cmd
+
+    - name: Compilar e Executar Testes (Windows MSVC)
+      if: runner.os == 'Windows'
       run: |
         cl /EHsc /std:c++${{ matrix.cpp_std }} estatistica.cpp testes.cpp /Fe:executavel_testes.exe
-        executavel_testes.exe
+        .\executavel_testes.exe
